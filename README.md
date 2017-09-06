@@ -4,22 +4,22 @@ The scrips of OMSV have been tested in Debian GNU/Linux 9.0 (stretch) and CentOS
 
 Quick Start
 
-To quickly try our OMSV Caller, please first download the package(OMSV.tar.gz) and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878_split_alignment.tar.bz2) from our website http://yiplab.cse.cuhk.edu.hk/omsv/ and type following commands:
->tar -xzvf OMSV.tar.gz //
->tar -jxf NA12878_alignment.tar.bz2 -C OMSV/data
->tar -jxf NA12878_split_alignment.tar.bz2 -C OMSV/data
->cd OMSV
->chmod 777 makefile
->./makefile
+To quickly try our OMSV Caller, please first download the package(OMSV.tar.gz) and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878_split_alignment.tar.bz2) from our website http://yiplab.cse.cuhk.edu.hk/omsv/ and type following commands:  
+>tar -xzvf OMSV.tar.gz  
+>tar -jxf NA12878\_alignment.tar.bz2 -C OMSV/data  
+>tar -jxf NA12878\_split\_alignment.tar.bz2 -C OMSV/data  
+>cd OMSV  
+>chmod 777 makefile  
+>./makefile  
 >./callSV.sh
 
 callSV.sh provide the examples of calling the OMSV callers (Matlab is required to call CNVs). Then you can find the resulting lists in SV\_result with prefix 12878 (e.g. 12878Indel.osv, 12878Mixed\_indel.osv, and 12878Complex\_total.bed).
 
 =================================================================================
-Parameters and Settings of the tools:
-	OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:
-		-inputLabel:
-			Default value: 878. The index/label of genome.
+Parameters and Settings of the tools:  
+	OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:  
+		-inputLabel:  
+			Default value: 878. The index/label of genome.  
 		-outputFolder:
 			Default value: ./. The path of the folder to store the output fils.
 		-SVoutputFile:
