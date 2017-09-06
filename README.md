@@ -1,4 +1,4 @@
-# QUICK START
+# OMSV TUTORIAL
 =================================================================================
 The scrips of OMSV have been tested in Debian GNU/Linux 9.0 (stretch) and CentOS Linux release 7.3.1611 (Core) platform. And the matlab code was developed in Matlab R2011b (7.13.0.564) 64-bit (glnxa64).
 
@@ -17,45 +17,45 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 
 =================================================================================
 Parameters and Settings of the tools:
-   OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:
-        -inputLabel:
-                 Default value: 878. The index/label of genome.
-        -outputFolder:
-                 Default value: ./. The path of the folder to store the output fils.
-        -SVoutputFile:
-                 Default value: Detected_structual_variants. The prefix of the file name of SVs (.osv).
-        -chrMapFile:
-                 Default value: hg38_r.cmap. The file name of the reference map(.cmap).
-        -optAlignFile:
-                 Default value: C6661_700bp_hg38_combRefOMB2.oma. The file name of the alignment map file(.oma).
-        -optTempFolder:
-                 Default value: ./. The folder to store the processed alignment maps by chromosomes.
-        -likelihoodRatioCutOff:
-                 Default value: 1e+06. The cutoff of the likelihood ratio for SV all hypothesis (reciprocal of the one in the paper). The default value changes along with the experiment data.
-        -numberOfSupportIndelMolecule:
-                 Default value: 10. The minimum coverage of a segment being called SVs. The default value changes along with the experiment data.
-        -numberOfSupportSignalMolecule:
-                 Default value: 10. The minimum coverage of a segment to call signal variations. The default value changes along with the experiment data.
-        -minIndelSize:
-                 Default value (b): 2000. The minimum length of a segment to call SVs.
-        -minIndelRatio:
-                 Default value: 0.05. The length proportion of a minimum SV could be detected on a segment. E.g. segment = 10000b, then the length of the minimum SV should be larger than 10000*0.05=500b.
-        -resolutionLimit:
-                 Default value: 1749. The minimum length of a segment to call signal variations.
-        -digestionRate:
-                 Default value: 0.875. The digestion rate of labels (signals) measured in the experiment.
-        -falseCutRate:
-                 Default value: 1e-05. The rate of false cut of a non-label position.
-        -pValueCutOff:
-                 Default value: 1e-09. The cutoff of p-value when call signal variations.
-        -cauchyMean:
-                 Default value: 1.0096. The mean value of cauchy distribution of null hypothesis when calling SVs. Reset a new value only if you have good reason.
-        -cauchyScale:
-                 Default value: 0.0291. The parameter to calculate cauchy distribution. Reset a new value only if you have good reason.
-        -confidenceLimit:
-                 Default value: 9. The lowest alignment confidence for molecules (optical maps) to call SVs or signal variations.
-        -numberOfChromosome:
-                 Default value: 24. The first n chromosomes to detect SVs.
+	OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:
+		-inputLabel:
+			Default value: 878. The index/label of genome.
+		-outputFolder:
+			Default value: ./. The path of the folder to store the output fils.
+		-SVoutputFile:
+			Default value: Detected_structual_variants. The prefix of the file name of SVs (.osv).
+		-chrMapFile:
+			Default value: hg38_r.cmap. The file name of the reference map(.cmap).
+		-optAlignFile:
+			Default value: C6661_700bp_hg38_combRefOMB2.oma. The file name of the alignment map file(.oma).
+		-optTempFolder:
+			Default value: ./. The folder to store the processed alignment maps by chromosomes.
+		-likelihoodRatioCutOff:
+			Default value: 1e+06. The cutoff of the likelihood ratio for SV all hypothesis (reciprocal of the one in the paper). The default value changes along with the experiment data.
+		-numberOfSupportIndelMolecule:
+			Default value: 10. The minimum coverage of a segment being called SVs. The default value changes along with the experiment data.
+		-numberOfSupportSignalMolecule:
+			Default value: 10. The minimum coverage of a segment to call signal variations. The default value changes along with the experiment data.
+		-minIndelSize:
+			Default value (b): 2000. The minimum length of a segment to call SVs.
+		-minIndelRatio:
+			Default value: 0.05. The length proportion of a minimum SV could be detected on a segment. E.g. segment = 10000b, then the length of the minimum SV should be larger than 10000*0.05=500b.
+		-resolutionLimit:
+			Default value: 1749. The minimum length of a segment to call signal variations.
+		-digestionRate:
+			Default value: 0.875. The digestion rate of labels (signals) measured in the experiment.
+		-falseCutRate:
+			Default value: 1e-05. The rate of false cut of a non-label position.
+		-pValueCutOff:
+			Default value: 1e-09. The cutoff of p-value when call signal variations.
+		-cauchyMean:
+			Default value: 1.0096. The mean value of cauchy distribution of null hypothesis when calling SVs. Reset a new value only if you have good reason.
+		-cauchyScale:
+			Default value: 0.0291. The parameter to calculate cauchy distribution. Reset a new value only if you have good reason.
+		-confidenceLimit:
+			Default value: 9. The lowest alignment confidence for molecules (optical maps) to call SVs or signal variations.
+		-numberOfChromosome:
+			Default value: 24. The first n chromosomes to detect SVs.
 
    complex\_caller.sh has 3 parameters: input alignment (.oma), output folder and output label. Call complex SVs, e.g. translocation, large inversion, and duplications (type ./complex_caller.sh check parameters).
 
