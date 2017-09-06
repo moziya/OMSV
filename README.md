@@ -7,7 +7,7 @@ Here we provide the package of OMSV with all source codes (C++, bash script, and
 =================================================================================
 ## Quick Start
 
-To quickly try our OMSV Caller, please first download the package and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878\_split\_alignment.tar.bz2) from the data website mentioned above and type following commands:  
+To quickly try our OMSV Caller, please first download the package and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878\_split\_alignment.tar.bz2) from the data website mentioned above and type following commands (please make sure the [OMTools](https://github.com/aldenleung/OMTools) has been installed):  
 >tar -xzvf OMSV.tar.gz  
 >tar -jxf NA12878\_alignment.tar.bz2 -C OMSV/data  
 >tar -jxf NA12878\_split\_alignment.tar.bz2 -C OMSV/data  
@@ -46,7 +46,7 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 
 + CNV\_caller.sh has 4 parameters: 1. alignment file (.oma), 2. reference map (.cmap), 3. output folder and 4. output label. This duplication caller is developed with Matlab, please make sure the matlab is runable. Detect CNV candidates.
 
-+ Medium-size inversions are called by the component of OMTools.jar. Please type "java -jar OMTools.jar SVDetection" to check the parameters.
++ Medium-size inversions are called by the component of [OMTools](https://github.com/aldenleung/OMTools). Please install the OMTools into the same folder of OMSV, and type "java -jar OMTools.jar SVDetection" to check the parameters.
 
 + postFilter.sh has 2 parameters: SV list file and cutoff size. This component could remove the false SVs caused by N-gaps, fragile sites, or pseudo-autosomal regions and filter the cases with given SV size.
 
