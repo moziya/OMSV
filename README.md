@@ -18,9 +18,9 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 
 =================================================================================
 Parameters and Settings of the tools:  
-*OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:  
-		**-inputLabel:  Default value: 878. The index/label of genome.  
-		**-outputFolder:	Default value: ./. The path of the folder to store the output fils.
++ OMSV (type ./OMSV to check the parameters) to call indels and mixed indels and site variations:  
+		- -inputLabel:  Default value: 878. The index/label of genome.  
+		- -outputFolder:	Default value: ./. The path of the folder to store the output fils.
 		-SVoutputFile:
 			Default value: Detected_structual_variants. The prefix of the file name of SVs (.osv).
 		-chrMapFile:
