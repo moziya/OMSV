@@ -5,7 +5,7 @@ The scrips of OMSV have been tested in Debian GNU/Linux 9.0 (stretch) and CentOS
 Quick Start
 
 To quickly try our OMSV Caller, please first download the package(OMSV.tar.gz) and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878_split_alignment.tar.bz2) from our website http://yiplab.cse.cuhk.edu.hk/omsv/ and type following commands:
->tar -xzvf OMSV.tar.gz 
+>tar -xzvf OMSV.tar.gz //
 >tar -jxf NA12878_alignment.tar.bz2 -C OMSV/data
 >tar -jxf NA12878_split_alignment.tar.bz2 -C OMSV/data
 >cd OMSV
