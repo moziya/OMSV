@@ -1,1 +1,1 @@
-The c++ and Matlab source files are put in this folder.
+The c++ source files (c++11, compiled by g++) are put in this folder.
