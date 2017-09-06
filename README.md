@@ -50,6 +50,7 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 
 + postFilter.sh has 2 parameters: SV list file and cutoff size. This component could remove the false SVs caused by N-gaps, fragile sites, or pseudo-autosomal regions and filter the cases with given SV size.
 
++ Other utilities and the parameters are posted in our [website](http://yiplab.cse.cuhk.edu.hk/omsv/) (refer to **Section 2. Commands of tools**).
 
 =================================================================================
 ## File formats:
@@ -70,3 +71,7 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 1. score: the likelihood ratio of the SV calls.
 1. coverage: number of molecules covering the SV region.
 1. against: number of molecules covering the SV region but support reference type.
+
+=================================================================================
+## Citation:
+> Le Li, Tsz-Piu Kwok, Alden King-Yung Leung, et.al. OMSV enables accurate and comprehensive identification of large structural variations from nanochannel-based single-molecule optical maps. Manuscript under revision, 2017.
