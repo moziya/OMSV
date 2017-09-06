@@ -50,10 +50,11 @@ Parameters and Settings of the tools:
 
 
 =================================================================================
-OM alignment (OMA) format:
+File formats:
 
-OMSV accepts .oma (OM Alignment) format files as alignment results, which is the output file format of OMBlast, and .cmap (consensus map) file as reference genome maps.  
-The resulting file format is .osv (OM SV), which generally has 13 columns:  
+**Input**: OMSV accepts .oma (OM Alignment) format files as alignment results, which is the output file format of OMBlast, and .cmap (consensus map) file as reference genome maps.  
+
+**Output**: The output file format of OMSV is .osv (OM SV), which generally has 13 columns:  
 1. chr: chromosome of SVs.
 1. start: start of coordinate of SVs on reference.
 1. stop: stop of coordinate of SVs on reference.
