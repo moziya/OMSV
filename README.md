@@ -14,10 +14,9 @@ To quickly try our OMSV Caller, please first download the package and alignment 
 >cd OMSV  
 >chmod 777 makefile  
 >./makefile  
->./callSV\_old.sh (Run the original version, of which the results are consistent with the published results)  
 >./callSV.sh (Run the latest version, of which the results should be slightly different)
 
-callSV\_old.sh (callSV.sh) provide the examples of calling the OMSV callers (Matlab is required to call CNVs). Then you can find the resulting lists in SV\_result with prefix 12878 (e.g. 12878Indel.osv, 12878Mixed\_indel.osv, and 12878Complex\_total.bed).
+callSV.sh provide the examples of calling the OMSV callers (Matlab is required to call CNVs). Then you can find the resulting lists in SV\_result with prefix 12878 (e.g. 12878Indel.osv, 12878Mixed\_indel.osv, and 12878Complex\_total.bed).
 
 =================================================================================
 ## Parameters and Settings of the tools:  
