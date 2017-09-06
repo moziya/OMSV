@@ -1,7 +1,8 @@
 # OMSV
+A quick start of OMSV.
 =================================================================================
 The scrips of OMSV have been tested in Debian GNU/Linux 9.0 (stretch) and CentOS Linux release 7.3.1611 (Core) platform. And the matlab code was developed in Matlab R2011b (7.13.0.564) 64-bit (glnxa64).
-=================================================================================
+
 Quick Start
 
 To quickly try our OMSV Caller, please first download the package(OMSV.tar.gz) and alignment files of OM data (e.g. NA12878\_alignment.tar.bz2 and NA12878_split_alignment.tar.bz2) from our website http://yiplab.cse.cuhk.edu.hk/omsv/ and type following commands:
