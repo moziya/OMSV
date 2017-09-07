@@ -13,11 +13,26 @@ echo "##Compiled from three complex callers: medium inversion, copy-number varia
 
 echo "#chr1	point1	chr2	point2	type	size	sample" >> $4
 
-sed '/#/d' $3 | sed 's/Inversion/Large-Inversion/g' | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" >> $4
+if [ -f $3 ]
+then
+	sed '/#/d' $3 | sed 's/Inversion/Large-Inversion/g' | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" >> $4
+else
+	echo "The 3rd input file (Large-inversion) is not exist."
+fi
 
-awk '$2=$2"\t"$1' OFS="\t" $2 | sed '/#/d' | sed 's/sizeChange=//g' | sed 's/Duplication/CNV/g' | cut -f1-5,9 | awk -v var="$sample" '$6=$6"\t"var' OFS="\t" >>  $4
+if [ -f $2 ]
+then
+	awk '$2=$2"\t"$1' OFS="\t" $2 | sed '/#/d' | sed 's/sizeChange=//g' | sed 's/Duplication/CNV/g' | cut -f1-5,9 | awk -v var="$sample" '$6=$6"\t"var' OFS="\t" >>  $4
+else
+	echo "The 2nd input file (CNV) is not exist."
+fi
 
-sed '/#/d' $1 | awk '$2=$2"\t"$1' OFS="\t" | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" | cut -f1-7 | sed 's/Inversion/Medium-Inversion/g' >> $4
+if [ -f $2 ]
+then
+	sed '/#/d' $1 | awk '$2=$2"\t"$1' OFS="\t" | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" | cut -f1-7 | sed 's/Inversion/Medium-Inversion/g' >> $4
+else
+	echo "The 1st input file (Medium-size inversion) is not exist."
+fi
 
 sort -n -k1,1 -k3,3 -k2,2 -k4,4 $4 | awk '$5=="Inter-Translocation"||$5=="Intra-Translocation"{$6="nan"}1' OFS="\t" > ${4}_tp && mv ${4}_tp $4
 
