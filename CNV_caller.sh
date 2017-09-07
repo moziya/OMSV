@@ -9,7 +9,7 @@ align_file=$1
 ref_file=$2
 outFold=$3
 lab=$4
-command -v matlab >/dev/null 2>&1 || { echo "CNV caller requires 'matlab' but it's not installed.  Aborting." >&2; exit 1; }
+
 cut -f1,4,6,7,12,13 $1 | sed '/#/d' | sort -n -k1,1 -k5,5 -k6,6 | awk '($3>10&&$4>1)||($3>20&&$4<1)' > $outFold/cov_mat2.txt
 cut -f1,6 $2 | sed '/#/d' | sort -n -k1,1 -k2,2 > $outFold/ref_mat2.txt
 matlab -nodisplay -nodesktop -r	"try cal_dup('$outFold/ref_mat2.txt','$outFold/cov_mat2.txt','$outFold/${lab}Duplication.bed',2); exit; catch exit; end;" 
