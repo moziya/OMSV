@@ -10,11 +10,12 @@ then
 echo "1. Start to call large indels"
 mkdir temp
 ./OMSV -inputLabel 12878 -outputFolder SV_result/ -SVoutputFile Indel -chrMapFile hg38_r.cmap -optAlignFile data/NA12878_700bp_hg38_combRefOMB2.oma -optTempFolder temp/
-rm -f *_List.txt
+rm -f SV_result/*_List.txt
 ./postFilter.sh SV_result/12878Indel_2000.osv 2000
 
 echo "2. Start to call mixed indels"
 ./OMSV_mixedIndel -inputLabel 12878 -outputFolder SV_result/ -SVoutputFile Mixed_indel -chrMapFile hg38_r.cmap -optAlignFile data/NA12878_700bp_hg38_combRefOMB2.oma -optTempFolder temp/
+rm -f SV_result/*_List.txt
 ./postFilter.sh SV_result/12878Mixed_indel_2000.osv 2000
 sed '/Homozygous/d' SV_result/12878Mixed_indel_2000.osv | sed '/Heterozygous/d' > SV_result/12878Mixed_indel_2000.osv_tp && mv SV_result/12878Mixed_indel_2000.osv_tp SV_result/12878Mixed_indel_2000.osv
 
