@@ -24,10 +24,10 @@ rm -r -f temp
 fi
 
 echo "2. Start to call medium-size inversions"
-if java -jar OMTools-master/OMTools.jar >/dev/null 2>&1
+if java -jar */OMTools.jar >/dev/null 2>&1
 then
         
-	java -jar OMTools/OMTools.jar SVDetection --refmapin hg38_r.cmap --optresin data/NA12878_700bp_hg38_combRefOMB2.oma --mininvsig 4 --svout 12878Med_inv.osv --flanksig 0 --deg 0 -svmode 2 -minsupport 10 && sed -i '/.site/d' 12878Med_inv.osv
+	java -jar */OMTools.jar SVDetection --refmapin hg38_r.cmap --optresin data/NA12878_700bp_hg38_combRefOMB2.oma --mininvsig 4 --svout 12878Med_inv.osv --flanksig 0 --deg 0 -svmode 2 -minsupport 10 && sed -i '/.site/d' 12878Med_inv.osv
 else
         echo "Medium-size inversion caller requires java and OMTools but not installed. Skip this step."
 fi
