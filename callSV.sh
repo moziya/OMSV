@@ -7,18 +7,17 @@ fi
 if [ $step -lt 1 ]
 then
 
-echo "1. Start to call large indels"
+echo "1. Start to call large indels and site of NA12878"
 mkdir temp
+
 ./OMSV -inputLabel 12878 -outputFolder SV_result/ -SVoutputFile Indel -chrMapFile hg38_r.cmap -optAlignFile data/NA12878_700bp_hg38_combRefOMB2.oma -optTempFolder temp/
+
+sed '/.site\|#/!d' SV_result/12878Indel_2000.osv > SV_result/12878Sites_2000.osv
+sed '/Homozygous\|Heterozygous/d' SV_result/12878Indel_2000.osv > SV_result/12878Mixed_indel_2000.osv
+sed -i '/.site\|HDI\|HI1I2\|HD1D2/d' SV_result/12878Indel_2000.osv
+
 rm -f SV_result/*_List.txt
 ./postFilter.sh SV_result/12878Indel_2000.osv 2000
-
-echo "2. Start to call mixed indels"
-./OMSV_mixedIndel -inputLabel 12878 -outputFolder SV_result/ -SVoutputFile Mixed_indel -chrMapFile hg38_r.cmap -optAlignFile data/NA12878_700bp_hg38_combRefOMB2.oma -optTempFolder temp/
-rm -f SV_result/*_List.txt
-./postFilter.sh SV_result/12878Mixed_indel_2000.osv 2000
-sed '/Homozygous/d' SV_result/12878Mixed_indel_2000.osv | sed '/Heterozygous/d' > SV_result/12878Mixed_indel_2000.osv_tp && mv SV_result/12878Mixed_indel_2000.osv_tp SV_result/12878Mixed_indel_2000.osv
-
 
 rm -r -f temp
 fi
