@@ -16,18 +16,21 @@ echo "#chr1	point1	chr2	point2	type	size	sample" >> $4
 if [ -f $1 ]
 then
 	sed '/#/d' $1 | awk '$2=$2"\t"$1' OFS="\t" | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" | cut -f1-7 | sed 's/Inversion/Medium-Inversion/g' >> $4
+	rm $1
 else
 	echo "The 1st input file (Medium-size inversion) is not exist."
 fi
 if [ -f $2 ]
 then
 	awk '$2=$2"\t"$1' OFS="\t" $2 | sed '/#/d' | sed 's/sizeChange=//g' | sed 's/Duplication/CNV/g' | cut -f1-5,9 | awk -v var="$sample" '$6=$6"\t"var' OFS="\t" >>  $4
+	rm $2
 else
 	echo "The 2nd input file (CNV) is not exist."
 fi
 if [ -f $3 ]
 then
 	sed '/#/d' $3 | sed 's/Inversion/Large-Inversion/g' | awk -v var="$sample" '$6=$4-$2"\t"var' OFS="\t" >> $4
+	rm $3
 else
 	echo "The 3rd input file (Large-inversion) is not exist."
 fi
@@ -47,6 +50,5 @@ do
 	mv ${4}_tp $4
 done
 
-rm $1
-rm $2
-rm $3
+
+
