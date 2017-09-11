@@ -57,7 +57,7 @@ struct opticalMapType{
 	double score;
         double confidence;
 //        char hitEnum[1000];
-	char hitEnum[1000];
+	char hitEnum[2000];
 	double fpr=0;////
         double fnr=0;////
         double alignRate=0;////
@@ -494,7 +494,7 @@ struct optAlignType{
 	LL numberOfSites;
 	double score;
 	double confidence;
-	char hitEnum[1200];
+	char hitEnum[2000];
 
 	// position = distance[i+1] - distance[i]
 	int position[2500];
