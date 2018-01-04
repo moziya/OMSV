@@ -74,4 +74,4 @@ callSV.sh provide the examples of calling the OMSV callers (Matlab is required t
 
 =================================================================================
 ## Citation:
-> Le Li, Tsz-Piu Kwok, Alden King-Yung Leung, et.al. **OMSV enables accurate and comprehensive identification of large structural variations from nanochannel-based single-molecule optical maps**. *Manuscript under revision, 2017*.
+> Le Li, Tsz-Piu Kwok, Alden King-Yung Leung, et.al. **OMSV enables accurate and comprehensive identification of large structural variations from nanochannel-based single-molecule optical maps**. *Genome biology, 2017, 18(1): 230*.
