@@ -1,14 +1,15 @@
-function cal_dup(ref_file,align_file,outFile,z_num)
+function cal_dup(ref_file,align_file,outFile,z_num,OM_ava_len)
 if nargin == 0
 	ref_file = 'ref_mat2.txt';
 	align_file = 'cov_mat2.txt';
 	outFile = 'C6661_dup.osv';
 	z_num=2;
-elseif nargin ~= 4
-	fprintf('There are 4 parameters required: 1.input ref file, 2.input alignment file, 3.output file, 4.N\n');
+elseif nargin < 4 || nargin > 5
+	fprintf('There are 5 parameters required (the last one is optional): 1.input ref file, 2.input alignment file, 3.output file, 4.N, and 5. average OM molecule length\n');
 	return;
+elseif nargin < 5
+	OM_ava_len = 244075;
 end
-
 outFile = [outFile(1:end-4) '_' num2str(z_num) outFile(end-3:end)];
 for i = 1:24
 [real_dup{i},real_del{i}] = red_smot(700,i,ref_file,align_file,z_num);
@@ -147,7 +148,7 @@ std_vec = std(vec(avail_reg&vec<mean_vec*3));
 pr_upper = 1 - normcdf((vec-mean_vec)/std_vec);
 pr_lower = normcdf((vec-mean_vec)/std_vec);
 
-OM_ava_len = 244075;
+
 
 FPR = 0.05;
 L = length(vec);
