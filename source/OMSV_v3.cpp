@@ -820,7 +820,7 @@ void readOpticalAlign(int chr, char* outputFileLocation){
 	inputOptAlign = fopen(nameOfFile, "r");
 	LL cc = 0;
 //	printf("Start to read OM\n");
-	char hitEnum[100000];
+	char hitEnum[10000];
 	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, hitEnum, &opticalMap[cc].numberOfSites) == 14){
 		opticalMap[cc].hitEnum = hitEnum;
 		memset(hitEnum,0,sizeof(hitEnum));
