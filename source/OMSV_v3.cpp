@@ -59,20 +59,21 @@ struct opticalMapType{
         bool orientation;
 	double score;
         double confidence;
-        char hitEnum[2000];
+	string hitEnum;
+//        char hitEnum[2000];
 	double fpr=0;////
 	double fnr=0;////
 	double alignRate=0;////
         vector<int> position;
         void print(){
-                printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+                printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         printf("%d ", position[i]);
                 printf("\n");
         }
         void print(FILE* targetFile){
                 sprintf(tempString, "%lld", inputTrio);
-                fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+                fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         fprintf(targetFile, "%d ", position[i]);
                 fprintf(targetFile, "\n");
@@ -172,7 +173,7 @@ void readSourceFile(){
 //		memset(opticalMap1[numberOfOpticalMap].hitEnum,0,sizeof(opticalMap1[numberOfOpticalMap].hitEnum));
 //		strncpy(opticalMap1[numberOfOpticalMap].hitEnum,hitE,siz);
 //		opticalMap1[numberOfOpticalMap].calc();////
-		fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
+		fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum.c_str());
                 if (opticalMap1[numberOfOpticalMap].score < 0) tttest++;
 		numberOfOpticalMap++;
 		if (numberOfOpticalMap==totSize){
@@ -254,7 +255,7 @@ void addSplitedMap(){
 			//opticalMap1[tempCC].fpr = opticalMap1[i].fpr + opticalMap1[i+1].fpr;////
                         opticalMap1[tempCC].position.clear();
 //			opticalMap1[tempCC].hitEnum = new char[4];
-                        strcpy(opticalMap1[tempCC].hitEnum, "FFF");
+                        opticalMap1[tempCC].hitEnum = "FFF";
                         if (opticalMap1[tempCC].optStart > opticalMap1[tempCC].optEnd)
                                 tempCC--;
                         tempCC++;
@@ -531,7 +532,7 @@ struct optAlignType{
 	LL numberOfSites;
 	double score;
 	double confidence;
-	char hitEnum[2000];
+	string hitEnum;
 
 	// position = distance[i+1] - distance[i]
 	int position[2500];
@@ -819,7 +820,10 @@ void readOpticalAlign(int chr, char* outputFileLocation){
 	inputOptAlign = fopen(nameOfFile, "r");
 	LL cc = 0;
 //	printf("Start to read OM\n");
-	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, opticalMap[cc].hitEnum, &opticalMap[cc].numberOfSites) == 14){
+	char hitEnum[100000];
+	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, hitEnum, &opticalMap[cc].numberOfSites) == 14){
+		opticalMap[cc].hitEnum = hitEnum;
+		memset(hitEnum,0,sizeof(hitEnum));
 		int tempPosition[5000];
 //		opticalMap[cc].position = new int[opticalMap[cc].numberOfSites];
 //		opticalMap[cc].oldPosition = new int[opticalMap[cc].numberOfSites];
