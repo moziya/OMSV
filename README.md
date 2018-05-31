@@ -3,8 +3,8 @@
 Added a low-coverage mode in the pipeline to support the cases that the input alignment is low-coverage (e.g. <10x for the alignment of consensus maps to the reference). 
 
 To trigger this mode, please set 
-	"likelihoodRatioCutOff" as 0, 
-	"numberOfSupportIndelMolecule" as 1. 
++	"likelihoodRatioCutOff" as 0, 
++	"numberOfSupportIndelMolecule" as 1. 
 
 =================================================================================
 
