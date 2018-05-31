@@ -1047,7 +1047,7 @@ void advanceLikelihoodDistanceCalculation(LL start, LL end){
 		sampleMean += tempDistanceDoubleNoOutlier[i];
 	sampleMean /= cntNoOutlier;
 	// Change sampleMean to sampleMedian
-	sampleMean = (cntNoOutlier%2==1)?(tempDistanceDoubleNoOutlier[cntNoOutlier/2]+tempDistanceDoubleNoOutlier[(cntNoOutlier/2)+1])/2:tempDistanceDoubleNoOutlier[cntNoOutlier/2];
+	sampleMean = (cntNoOutlier%2!=1)?(tempDistanceDoubleNoOutlier[cntNoOutlier/2]+tempDistanceDoubleNoOutlier[(cntNoOutlier/2)+1])/2:tempDistanceDoubleNoOutlier[cntNoOutlier/2];
 	// Null hypothesis
 	for (LL i=0; i<cntNoOutlier; i++)
 		nullHypothesisLikelihood *= cauchyPDF(tempDistanceDoubleNoOutlier[i], cauchyMean, cauchyScale);
@@ -1067,9 +1067,9 @@ void advanceLikelihoodDistanceCalculation(LL start, LL end){
 		double mean1 = 0, mean2 = 0;
 
 		//  Try Median instead of Mean.
-		mean1 = (i%2==1)?(tempDistanceDoubleNoOutlier[i/2]+tempDistanceDoubleNoOutlier[(i/2)+1])/2:tempDistanceDoubleNoOutlier[i/2];
+		mean1 = (i%2!=1)?(tempDistanceDoubleNoOutlier[i/2]+tempDistanceDoubleNoOutlier[(i/2)+1])/2:tempDistanceDoubleNoOutlier[i/2];
 		LL tempSecondPartSize = cntNoOutlier - i;
-		mean2 = (tempSecondPartSize%2==1)?(tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2]+tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2+1])/2:tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2];
+		mean2 = (tempSecondPartSize%2!=1)?(tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2]+tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2+1])/2:tempDistanceDoubleNoOutlier[i+tempSecondPartSize/2];
 
 
 		double tempLikelihood;
