@@ -45,7 +45,7 @@ LL numberOfSupportSignalMolecule;
 double likelihoodRatioCutOff; 
 //Start add 
 struct opticalMapType{
-        char mapId[100];
+        string mapId;
         LL refStartIndex;
         LL refEndIndex;
         LL refStart;
@@ -57,7 +57,8 @@ struct opticalMapType{
 	double score;
         double confidence;
 //        char hitEnum[1000];
-	char hitEnum[1000];
+	string hitEnum;
+//	char hitEnum[1000];
 	double fpr=0;////
         double fnr=0;////
         double alignRate=0;////
@@ -65,7 +66,7 @@ struct opticalMapType{
 /*	void calc()////
         {////
                 int tot_fp = 0, tot_fn = 0;
-                for (int i = 0; hitEnum[i]!='\0'; i++)
+                for (int i = 0; i < hitEnum.size(); i++)
                 {
                         int curr = 0;
                         int fp, fn;
@@ -100,7 +101,7 @@ struct opticalMapType{
                 alignRate = ali_len*1.0/mol_len;
         }////*/
         void print(){
-		printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+		printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId.c_str(), score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
 //                printf("%s %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         printf("%d ", position[i]);
@@ -108,7 +109,7 @@ struct opticalMapType{
         }
         void print(FILE* targetFile){
                 sprintf(tempString, "%lld", inputTrio);
-		fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+		fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId.c_str(), score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
 //                fprintf(targetFile, "%s %s %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         fprintf(targetFile, "%d ", position[i]);
@@ -116,8 +117,8 @@ struct opticalMapType{
         }
 };
 bool ss(opticalMapType q, opticalMapType w){
-        LL e = strcmp(q.mapId, w.mapId);
-        return ((e<0?true:false) || (e==0 && q.chrId < w.chrId) || (e == 0 && q.chrId == w.chrId && q.optStart < w.optEnd));
+//        LL e = (q.mapId==w.mapId);
+        return ((q.mapId<w.mapId) || (q.mapId==w.mapId && q.chrId < w.chrId) || (q.mapId == w.mapId && q.chrId == w.chrId && q.optStart < w.optEnd));
 }
 
 vector<opticalMapType> opticalMap1;
@@ -145,7 +146,11 @@ void readSourceFile(){
         for (LL i=0; i<numberOfDL; i++)
                 fgets(tempString, 5000, inputAlignmentFile);
         numberOfOpticalMap = 0;
-        while (fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].mapId) == 1){
+        char mmid[10000];
+        memset(mmid,0,sizeof(mmid));
+        while (fscanf(inputAlignmentFile, "%s", mmid) == 1){
+                opticalMap1[numberOfOpticalMap].mapId = mmid;
+                memset(mmid,0,sizeof(mmid));
 //                if (numberOfOpticalMap<5 || numberOfOpticalMap % 100000 == 0) printf("%lld %s\n", numberOfOpticalMap, opticalMap1[numberOfOpticalMap].mapId);
                 LL tempNumberOfSites, tempLL;
                 fscanf(inputAlignmentFile, "%lld", &tempNumberOfSites);
@@ -185,14 +190,15 @@ void readSourceFile(){
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStartIndex, &opticalMap1[numberOfOpticalMap].refEndIndex);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].optStart, &opticalMap1[numberOfOpticalMap].optEnd);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStart, &opticalMap1[numberOfOpticalMap].refEnd);
-	//	char hitE[5000];
-          //      memset(hitE,0,sizeof(hitE));
-            //    fscanf(inputAlignmentFile, "%s", hitE);
+		char hitE[50000];
+                memset(hitE,0,sizeof(hitE));
+                fscanf(inputAlignmentFile, "%s", hitE);
               //  int siz = sizeof(hitE)/sizeof(char);
                 //opticalMap1[numberOfOpticalMap].hitEnum = new char[siz+1];
 //                memset(opticalMap1[numberOfOpticalMap].hitEnum,0,sizeof(opticalMap1[numberOfOpticalMap].hitEnum));
   //              strncpy(opticalMap1[numberOfOpticalMap].hitEnum,hitE,siz);
-                fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
+		opticalMap1[numberOfOpticalMap].hitEnum = hitE;
+//                fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
 //		opticalMap1[numberOfOpticalMap].calc();////
 		
                 numberOfOpticalMap++;
@@ -205,6 +211,7 @@ void readSourceFile(){
         printf("Number of optical map: %lld\n", numberOfOpticalMap);
 	LL old_i = 0, new_i=0;////
         for (LL i=0; i<numberOfOpticalMap; i++){
+//		if (i>490000 && i < 500000) printf("1 %lld %s %d %lld %lld \n", i, opticalMap1[i].mapId, (int)opticalMap1[i].position.size(), opticalMap1[i].optStart, opticalMap1[i].optEnd);
                 if (opticalMap1[i].orientation){
                         opticalMap1[i].optStart = opticalMap1[i].position[opticalMap1[i].optStart - 1];
                         opticalMap1[i].optEnd = opticalMap1[i].position[opticalMap1[i].optEnd];
@@ -212,6 +219,7 @@ void readSourceFile(){
                         opticalMap1[i].optStart = opticalMap1[i].position[opticalMap1[i].optStart];
                         opticalMap1[i].optEnd = opticalMap1[i].position[opticalMap1[i].optEnd - 1];
                 }
+//		if (i>490000 && i < 500000) printf("2 %lld %s\n", i, opticalMap1[i].mapId);
                 if (!opticalMap1[i].orientation){
                         LL tempMaxDis = opticalMap1[i].position[(int)opticalMap1[i].position.size() - 1];
                         for (LL j=0; j<(LL)opticalMap1[i].position.size(); j++)
@@ -221,20 +229,21 @@ void readSourceFile(){
                         opticalMap1[i].optEnd = tempMaxDis - opticalMap1[i].optEnd;
                         opticalMap1[i].orientation = true;
                 }
-		new_i = i;////
-                if (new_i == 0) continue;////
-                if (strcmp(opticalMap1[new_i].mapId,opticalMap1[old_i].mapId)==0)////
-                {
-                        for(LL tm = old_i; tm < new_i; tm++)
-                        {
-                                opticalMap1[tm].alignRate += opticalMap1[new_i].alignRate;
-                        }
-                        opticalMap1[new_i].alignRate = opticalMap1[old_i].alignRate;
-                }
-                else
-                {
-                        old_i = new_i;
-                }
+//		if (i>490000 && i < 500000) printf("3 %lld %s\n", i, opticalMap1[i].mapId);
+//		new_i = i;////
+  //              if (new_i == 0) continue;////
+    //            if (strcmp(opticalMap1[new_i].mapId,opticalMap1[old_i].mapId)==0)////
+      //          {
+        //                for(LL tm = old_i; tm < new_i; tm++)
+          //              {
+            //                    opticalMap1[tm].alignRate += opticalMap1[new_i].alignRate;
+              //          }
+//                        opticalMap1[new_i].alignRate = opticalMap1[old_i].alignRate;
+  //              }
+    //            else
+      //          {
+        //                old_i = new_i;
+          //      }
         }
 }
 
@@ -257,7 +266,8 @@ void addSplitedMap(){
 	LL totSize = numberOfOpticalMap+50000;
 	opticalMap1.resize(totSize);
         for (LL i=0; i<numberOfOpticalMap-1; i++){
-                if (strcmp(opticalMap1[i].mapId, opticalMap1[i+1].mapId) == 0
+//                cout << "Start to check " << i << "-th map for splitting\n";
+                if ((opticalMap1[i].mapId == opticalMap1[i+1].mapId)
                                 && opticalMap1[i].chrId == opticalMap1[i+1].chrId
                                 && opticalMap1[i+1].refStart - opticalMap1[i].refEnd > 0
                                 && opticalMap1[i+1].refStart - opticalMap1[i].refEnd < 5000000){
@@ -274,8 +284,8 @@ void addSplitedMap(){
                         opticalMap1[tempCC].fnr = opticalMap1[i].fnr + opticalMap1[i+1].fnr;////
                         //opticalMap1[tempCC].fpr = opticalMap1[i].fpr + opticalMap1[i+1].fpr;////
                         opticalMap1[tempCC].position.clear();
-//			opticalMap1[tempCC].hitEnum = new char[4];
-                        strcpy(opticalMap1[tempCC].hitEnum, "FFF");
+			opticalMap1[tempCC].hitEnum = "FFF";
+//                        strcpy(opticalMap1[tempCC].hitEnum, "FFF");
                         if (opticalMap1[tempCC].optStart > opticalMap1[tempCC].optEnd)
                                 tempCC--;
                         tempCC++;
@@ -486,7 +496,7 @@ chrType chromosome;
 
 struct optAlignType{
 	LL belongs;
-	char mapId[100];
+	string mapId;
 	LL optStart;
 	LL optEnd;
 	LL refStart;
@@ -494,11 +504,14 @@ struct optAlignType{
 	LL numberOfSites;
 	double score;
 	double confidence;
-	char hitEnum[1200];
+//	char hitEnum[1200];
+	string hitEnum;
 
 	// position = distance[i+1] - distance[i]
-	int position[2500];
-	int oldPosition[2500];
+        vector<int> position;
+        vector<int> oldPosition;
+//	int position[2500];
+//	int oldPosition[2500];
 	double fpr;////
         double fnr;////
         double alignRate;////
@@ -506,7 +519,7 @@ struct optAlignType{
 };
 
 struct distanceType{
-	char mapId[20];
+	string mapId;
 	LL start;
 	LL end;
 //	double score;
@@ -520,10 +533,10 @@ struct distanceType{
 		return (start < x.start || (start == x.start && end < x.end));
 	}
 	void print(){
-		printf("chrId:%d, id:%s start:%lld end:%lld oldDis:%lld, molDis:%lf cnt:%lld\n", chrId, mapId, chromosome.position[start], chromosome.position[end], chromosome.position[end]-chromosome.position[start], distance, cnt);
+		printf("chrId:%d, id:%s start:%lld end:%lld oldDis:%lld, molDis:%lf cnt:%lld\n", chrId, mapId.c_str(), chromosome.position[start], chromosome.position[end], chromosome.position[end]-chromosome.position[start], distance, cnt);
 	}
 	void printToFile(FILE* outputFile){
-		fprintf(outputFile, "chrId:%d, id:%s start:%lld end:%lld oldDis:%lld, molDis:%lf cnt:%lld\n", chrId, mapId, chromosome.position[start], chromosome.position[end], chromosome.position[end] - chromosome.position[start], distance, cnt);
+		fprintf(outputFile, "chrId:%d, id:%s start:%lld end:%lld oldDis:%lld, molDis:%lf cnt:%lld\n", chrId, mapId.c_str(), chromosome.position[start], chromosome.position[end], chromosome.position[end] - chromosome.position[start], distance, cnt);
 	}
 };
 vector<optAlignType> opticalMap;
@@ -558,8 +571,9 @@ void initResultFullList(char* SVoutputFile){
 	char nameOfFile[1000];
 	char buffer[200];
 	char extPart[200];
-	outputResult1 = createInputTrioFile("Distance_Pairs_List.txt", inputTrio, "w+");
-        outputResult2 = createInputTrioFile("Signal_Indels_List.txt", inputTrio, "w+"); /*
+//	outputResult1 = createInputTrioFile("Distance_Pairs_List.txt", inputTrio, "w+");
+  //      outputResult2 = createInputTrioFile("Signal_Indels_List.txt", inputTrio, "w+"); 
+/*
 #if defined(Real_Molecule_Assembly)
 	outputMoleculeToAssembly = createInputTrioFile("/local/shared/bill/BillMapFromREAL_Molecule_ASM_HG38/distanceList/", "moleculeToAssembly_List.txt", inputTrio, "w+");
 #endif if defined(Real_Assembly_Hg38)
@@ -712,8 +726,22 @@ void readOpticalAlign(int chr, char* outputFileLocation){
 	opticalMap.resize(totSiz+1);
 	inputOptAlign = fopen(nameOfFile, "r");
 	LL cc = 0;
-	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, opticalMap[cc].hitEnum, &opticalMap[cc].numberOfSites) == 14){
-		int tempPosition[5000];
+	char hitE[50000];
+	memset(hitE,0,sizeof(hitE));
+        char mmid[50000];
+        memset(mmid,0,sizeof(mmid));
+	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, mmid, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, hitE, &opticalMap[cc].numberOfSites) == 14){
+                opticalMap[cc].mapId = mmid;
+		opticalMap[cc].hitEnum = hitE;
+		memset(hitE,0,sizeof(hitE));
+                memset(mmid,0,sizeof(mmid));
+		vector<int> tempPosition;
+                tempPosition.clear();
+                tempPosition.resize(opticalMap[cc].numberOfSites);
+                opticalMap[cc].position.clear();
+                opticalMap[cc].position.resize(opticalMap[cc].numberOfSites);
+                opticalMap[cc].oldPosition.clear();
+                opticalMap[cc].oldPosition.resize(opticalMap[cc].numberOfSites);
 //		opticalMap[cc].position = new int[opticalMap[cc].numberOfSites];
   //              opticalMap[cc].oldPosition = new int[opticalMap[cc].numberOfSites];
 		for (LL i=0; i<opticalMap[cc].numberOfSites; i++){
@@ -880,11 +908,11 @@ void advanceLikelihoodDistanceCalculation(LL start, LL end){
                 bool fal = true;
                 for (LL j = 0; j < (LL)maps.size(); j++)
                 {
-                        if (maps[j] == atol(distancePair[i].mapId) && abs(dists[j] - distancePair[i].distance) < 1){fal = false;break;}
+                        if (maps[j] == stol(distancePair[i].mapId) && abs(dists[j] - distancePair[i].distance) < 1){fal = false;break;}
                 }
                 if (fal)
                 {
-                        maps.push_back(atol(distancePair[i].mapId));
+                        maps.push_back(stol(distancePair[i].mapId));
                         dists.push_back(distancePair[i].distance);
                         tempDistanceDouble[cnt++] = distancePair[i].distance/referenceDistance;
                        // fprintf(outputResult1, "%lld:%lld ",atol(distancePair[i].mapId),(LL)distancePair[i].distance);
@@ -1199,7 +1227,7 @@ void completePairs()
 					bool rep = true;
 					for (LL k = j+1; distancePair[k].start<oed&&k<distancePairCount; k++)
 					{
-						if (distancePair[k].start == tempPair.end&&strcmp(distancePair[k].mapId, distancePair[j].mapId)==0)
+						if (distancePair[k].start == tempPair.end&&(distancePair[k].mapId==distancePair[j].mapId))
 						{
 							tempPair.end = distancePair[k].end;
 							tempPair.distance += distancePair[k].distance;
@@ -1212,7 +1240,7 @@ void completePairs()
 						for (LL l = i; l < distancePairCount; l++)
 						{
 							if (distancePair[i] < distancePair[l])break;
-							else if (strcmp(distancePair[l].mapId, tempPair.mapId)==0) {rep = true; break;}
+							else if (distancePair[l].mapId == tempPair.mapId) {rep = true; break;}
 						}
 					}
 					if (!rep) extraDP.push_back(tempPair);
@@ -1332,7 +1360,8 @@ void parseHitEnum(){
 #endif	*/
 		//numberOfOM878++;
 		LL RefIndex = upper_bound(chromosome.position, chromosome.position + chromosome.numberOfSites, opticalMap[i].refStart) - chromosome.position - 1;
-		LL OpticalIndex = upper_bound(opticalMap[i].oldPosition, opticalMap[i].oldPosition + opticalMap[i].numberOfSites, opticalMap[i].optStart) - opticalMap[i].oldPosition - 1;
+//		LL OpticalIndex = upper_bound(opticalMap[i].oldPosition, opticalMap[i].oldPosition + opticalMap[i].numberOfSites, opticalMap[i].optStart) - opticalMap[i].oldPosition - 1;
+		LL OpticalIndex = upper_bound(opticalMap[i].oldPosition.begin(), opticalMap[i].oldPosition.end(), opticalMap[i].optStart) - opticalMap[i].oldPosition.begin() - 1;
 		// OpticalIndex = 0;
 		LL BeginRefIndex = RefIndex;
 		LL BeginOpticalIndex = OpticalIndex;
@@ -1347,11 +1376,11 @@ void parseHitEnum(){
 			distancePair[distancePairCount].start = BeginRefIndex;
 			distancePair[distancePairCount].end = EndRefIndex;
 			distancePair[distancePairCount].distance = opticalMap[i].optEnd - opticalMap[i].optStart;
-			strcpy(distancePair[distancePairCount].mapId, opticalMap[i].mapId);;
+			distancePair[distancePairCount].mapId = opticalMap[i].mapId;
 			distancePairCount++;
 			continue;
 		}
-		for (LL j=0; opticalMap[i].hitEnum[j]; j++){
+		for (LL j=0; j < opticalMap[i].hitEnum.size(); j++){
 			if (opticalMap[i].hitEnum[j] >= '0' && opticalMap[i].hitEnum[j] <= '9'){
 				tempCount = tempCount * 10 + (opticalMap[i].hitEnum[j]-'0');
 			}
@@ -1363,7 +1392,7 @@ void parseHitEnum(){
 							distancePair[distancePairCount].start = PreviousIndex;
 							distancePair[distancePairCount].end = RefIndex;
 							distancePair[distancePairCount].distance = tempDistance;
-							strcpy(distancePair[distancePairCount].mapId, opticalMap[i].mapId);
+							distancePair[distancePairCount].mapId = opticalMap[i].mapId;
 							distancePairCount++;
 							tempDistance = 0;
 						}
@@ -2035,9 +2064,9 @@ int main(int argv, char *argc[]){
 //		printf("Distance Pair Count-4: %lld\n", distancePairCount);
 //		printf("Number of the sites: %lld\n",chromosome.numberOfSites);
 		deletionTest(chrId);
-//				printf("Done Deletion\n");
+		printf("Done Deletion\n");
 		insertionTest(chrId);
-		// printf("Done Insertion\n");
+		printf("Done Insertion\n");
 	}
 	correctOverlapVariant();
 	outputVariantResult(argv,argc);
