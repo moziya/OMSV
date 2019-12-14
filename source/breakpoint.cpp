@@ -26,7 +26,8 @@ struct	opticalMapType{
         bool orientation;
 	double score;
         double confidence;
-        char hitEnum[2000];
+//        char hitEnum[2000];
+        string hitEnum;
 	double fpr;////
         double fnr;////
         double alignRate;////
@@ -34,7 +35,7 @@ struct	opticalMapType{
 	void calc()////
         {////
                 int tot_fp = 0, tot_fn = 0;
-                for (int i = 0; hitEnum[i]!='\0'; i++){
+                for (int i = 0; i < hitEnum.size(); i++){
                         int curr = 0;
                         int fp, fn;
                         int j;
@@ -153,7 +154,11 @@ vector<opticalMapType> readSourceFile(char* inputAlignmentFileName){
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStartIndex, &opticalMap1[numberOfOpticalMap].refEndIndex);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].optStart, &opticalMap1[numberOfOpticalMap].optEnd);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStart, &opticalMap1[numberOfOpticalMap].refEnd);
-                fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
+                char hEnum[500000];
+                memset(hEnum,0,sizeof(hEnum));
+                fscanf(inputAlignmentFile, "%s", hEnum);
+                opticalMap1[numberOfOpticalMap].hitEnum = hEnum;
+//                fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
 		opticalMap1[numberOfOpticalMap].calc();////
                 numberOfOpticalMap++;
         }
@@ -220,11 +225,67 @@ double calc_score(char* hitEnum, int miniM){
 	if (n<miniM) return 0;
 	return log(n)*n/N;
 }
+double calc_score(string hitEnum, int miniM){
+	int tempCount = 0;
+	double N=0, n=0;
+	for (LL j = 0; j<hitEnum.size(); j++)
+	{
+		if (hitEnum[j] >= '0' && hitEnum[j] <= '9')
+	        	tempCount = tempCount * 10 + (hitEnum[j]-'0');
+	    	else{
+        		if (hitEnum[j] == 'M')
+				n+=tempCount;
+			N+=tempCount;
+			tempCount = 0;
+		}
+	}
+	if (n<miniM) return 0;
+	return log(n)*n/N;
+}
 
 double calc_score_div(char* hitEnum, int rel_pos, int miniM){
 	int tempCount = 0;
 	int N1=0, n1=0, N2=0, n2=0, N=0;
 	for (LL j = 0; hitEnum[j]; j++){
+		if (hitEnum[j] >= '0' && hitEnum[j] <= '9')
+        		tempCount = tempCount * 10 + (hitEnum[j]-'0');
+		else{
+        		if (hitEnum[j] == 'M'){
+				N+=tempCount;
+				if (N<rel_pos)
+				{
+					n1+=tempCount;
+				}
+				else if (N>=rel_pos&&N-tempCount<rel_pos)
+				{
+					n1+=(rel_pos+tempCount-N);
+					n2+=(N-rel_pos);
+				}
+				else
+				{
+					n2+=tempCount;
+				}
+			}
+			else if (hitEnum[j] == 'D')
+				N+=tempCount;
+			if (N<rel_pos)
+				N1+=tempCount;
+			else if (N>=rel_pos&&N-tempCount<rel_pos){
+				N1+=(rel_pos+tempCount-N);
+				N2+=(N-rel_pos);
+			}
+			else
+				N2+=tempCount;
+			tempCount = 0;
+		}
+	}
+	if (n1<miniM || n2<miniM) return 0;
+	return min(log(n1)*double(n1)/N1,log(n2)*double(n2)/N2);
+}
+double calc_score_div(string hitEnum, int rel_pos, int miniM){
+	int tempCount = 0;
+	int N1=0, n1=0, N2=0, n2=0, N=0;
+	for (LL j = 0; j<hitEnum.size(); j++){
 		if (hitEnum[j] >= '0' && hitEnum[j] <= '9')
         		tempCount = tempCount * 10 + (hitEnum[j]-'0');
 		else{
