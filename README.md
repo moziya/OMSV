@@ -1,7 +1,9 @@
 # OMSV TUTORIAL
 =================================================================================
 ## Updates of version 1.2
-In ver1.2, the indel caller has been updated to accommodate the properties of DLS (with DLE enzyme) optical mapping data. To be noted, the DLE enzyme produces more nicking sites and, thus, the new DLS data will cost more time in OMSV pipeline.
+1. In ver1.2, the indel caller has been updated to accommodate the properties of DLS (with DLE enzyme) optical mapping data. To be noted, the DLE enzyme produces more nicking sites and, thus, the new DLS data will cost more time in OMSV pipeline.
+
+2. The script of calling complex SV (breakpoint.cpp) has been updated to accomodate the contig alignment
 
 =================================================================================
 ## Overall
