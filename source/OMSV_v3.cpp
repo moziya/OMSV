@@ -59,20 +59,21 @@ struct opticalMapType{
         bool orientation;
 	double score;
         double confidence;
-        char hitEnum[2000];
+        //char hitEnum[2000];
+	string hitEnum;
 	double fpr=0;////
 	double fnr=0;////
 	double alignRate=0;////
         vector<int> position;
         void print(){
-                printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+                printf("%s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", mapId, score, confidence, fpr,fnr,alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         printf("%d ", position[i]);
                 printf("\n");
         }
         void print(FILE* targetFile){
                 sprintf(tempString, "%lld", inputTrio);
-                fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum, (LL)position.size());
+                fprintf(targetFile, "%s %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld ", tempString, mapId, score, confidence, fpr, fnr, alignRate, chrId, optStart, optEnd, refStart, refEnd, hitEnum.c_str(), (LL)position.size());
                 for (LL i=0; i<(LL)position.size(); i++)
                         fprintf(targetFile, "%d ", position[i]);
                 fprintf(targetFile, "\n");
@@ -164,15 +165,16 @@ void readSourceFile(){
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStartIndex, &opticalMap1[numberOfOpticalMap].refEndIndex);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].optStart, &opticalMap1[numberOfOpticalMap].optEnd);
                 fscanf(inputAlignmentFile, "%lld%lld", &opticalMap1[numberOfOpticalMap].refStart, &opticalMap1[numberOfOpticalMap].refEnd);
-//		char hitE[5000];
-//		memset(hitE,0,sizeof(hitE));
-  //              fscanf(inputAlignmentFile, "%s", hitE);
+		char hitE[20000];
+		memset(hitE,0,sizeof(hitE));
+                fscanf(inputAlignmentFile, "%s", hitE);
+		opticalMap1[numberOfOpticalMap].hitEnum=hitE;
 //		int siz = sizeof(hitE)/sizeof(char);
 //		opticalMap1[numberOfOpticalMap].hitEnum = new char[siz+1];
 //		memset(opticalMap1[numberOfOpticalMap].hitEnum,0,sizeof(opticalMap1[numberOfOpticalMap].hitEnum));
 //		strncpy(opticalMap1[numberOfOpticalMap].hitEnum,hitE,siz);
 //		opticalMap1[numberOfOpticalMap].calc();////
-		fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
+//		fscanf(inputAlignmentFile, "%s", opticalMap1[numberOfOpticalMap].hitEnum);
                 if (opticalMap1[numberOfOpticalMap].score < 0) tttest++;
 		numberOfOpticalMap++;
 		if (numberOfOpticalMap==totSize){
@@ -254,7 +256,7 @@ void addSplitedMap(){
 			//opticalMap1[tempCC].fpr = opticalMap1[i].fpr + opticalMap1[i+1].fpr;////
                         opticalMap1[tempCC].position.clear();
 //			opticalMap1[tempCC].hitEnum = new char[4];
-                        strcpy(opticalMap1[tempCC].hitEnum, "FFF");
+                        opticalMap1[tempCC].hitEnum = "FFF";
                         if (opticalMap1[tempCC].optStart > opticalMap1[tempCC].optEnd)
                                 tempCC--;
                         tempCC++;
@@ -531,7 +533,8 @@ struct optAlignType{
 	LL numberOfSites;
 	double score;
 	double confidence;
-	char hitEnum[2000];
+//	char hitEnum[2000];
+	string hitEnum;
 
 	// position = distance[i+1] - distance[i]
 	int position[2500];
@@ -543,7 +546,7 @@ struct optAlignType{
         void calc()
         {
                 int tot_fp = 0, tot_fn = 0;
-                for (int i = 0; hitEnum[i]!='\0'; i++)
+                for (int i = 0; i < hitEnum.length(); i++)
                 {
                         int curr = 0;
                         int fp, fn;
@@ -819,8 +822,12 @@ void readOpticalAlign(int chr, char* outputFileLocation){
 	inputOptAlign = fopen(nameOfFile, "r");
 	LL cc = 0;
 //	printf("Start to read OM\n");
-	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, opticalMap[cc].hitEnum, &opticalMap[cc].numberOfSites) == 14){
+	char ht[200000];
+	memset(ht,0,sizeof(ht));
+	while (fscanf(inputOptAlign, "%lld %s %lf %lf %lf %lf %lf %lld %lld %lld %lld %lld %s %lld", &opticalMap[cc].belongs, opticalMap[cc].mapId, &opticalMap[cc].score, &opticalMap[cc].confidence, &opticalMap[cc].fpr, &opticalMap[cc].fnr, &opticalMap[cc].alignRate, &tempLongLong, &opticalMap[cc].optStart, &opticalMap[cc].optEnd, &opticalMap[cc].refStart, &opticalMap[cc].refEnd, ht, &opticalMap[cc].numberOfSites) == 14){
 		int tempPosition[5000];
+		opticalMap[cc].hitEnum = ht;
+		memset(ht,0,sizeof(ht));
 //		opticalMap[cc].position = new int[opticalMap[cc].numberOfSites];
 //		opticalMap[cc].oldPosition = new int[opticalMap[cc].numberOfSites];
 		for (LL i=0; i<opticalMap[cc].numberOfSites; i++){
@@ -1350,7 +1357,7 @@ void parseHitEnum(){
 			distancePairCount++;
 			continue;
 		}
-		for (LL j=0; opticalMap[i].hitEnum[j]; j++){
+		for (LL j=0; j < opticalMap[i].hitEnum.length(); j++){
 			if (opticalMap[i].hitEnum[j] >= '0' && opticalMap[i].hitEnum[j] <= '9'){
 				tempCount = tempCount * 10 + (opticalMap[i].hitEnum[j]-'0');
 			}
