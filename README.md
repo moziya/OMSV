@@ -1,5 +1,9 @@
 # OMSV TUTORIAL
 =================================================================================
+## Update in 2021
+The source files have been changed to deal with Saphyr data (DLE1 based data).
+
+=================================================================================
 ## Overall
 Here we provide the package of OMSV with all source codes (C++, bash script, and Matlab codes) and binary files. The scrips of OMSV have been tested in Debian GNU/Linux 9.0 (stretch) and CentOS Linux release 7.3.1611 (Core) platform and the matlab code was developed in Matlab R2011b (7.13.0.564) 64-bit (glnxa64). The way to start our pipeline within a few steps and the details of the programs, including input parameters and supported file formats, are shown in "Readme\_OMSV.txt".  
 **All data** (raw optical mapping data and alignments) are accessible at [Zenodo repository](https://doi.org/10.5281/zenodo.886387). The alignment file, as well as the 2-round split alignment, of NA12878 are provided for the quick start. 
